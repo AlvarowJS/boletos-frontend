@@ -13,14 +13,10 @@ import PublicRoute from "@components/routes/PublicRoute";
 
 // ** Utils
 import { isObjEmpty } from "@utils";
-import Citas from "../../views/citas/Citas";
-import bdCitas from "../../api/bdCitas";
-import Paciente from "../../views/pacientes/Paciente";
-import Consultorio from "../../views/consultorios/Consultorio";
 import Usuario from "../../views/usuarios/Usuario";
-import Estado from "../../views/estados/Estado";
-import Medico from "../../views/medicos/Medico";
-import Pago from "../../views/pagos/Pago";
+import bdBoletas from "../../api/bdBoletos";
+import Evento from "../../views/eventos/Evento";
+
 
 // import OperacionesTrans from "../../views/operaciones/OperacionesTrans";
 
@@ -46,15 +42,14 @@ const AuthGuard = ({ children }) => {
     const token = localStorage.getItem("token");
     const objToken = { token: token }
 
-    bdCitas.post('/token-auth', objToken, {
+    bdBoletas.post('/token-auth', objToken, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
       .then(res => {
         setMyRol(res?.data?.role_id)
-        const rol = res?.data?.role?.id
-
+        const rol = res?.data?.role_id
         if (!token) {
           // navigate("/login");
         } else {
@@ -62,7 +57,7 @@ const AuthGuard = ({ children }) => {
           // Si el token no es válido, llame a "navigate" para redirigir al usuario a la página de inicio de sesión
           if (rol == "1") {
           } else if (rol == "2") {
-            const restrictedRoutes = ["paciente"];
+            const restrictedRoutes = ["eventos"];
             if (restrictedRoutes.includes(window.location.pathname)) {
               navigate("/error");
             }
@@ -117,33 +112,13 @@ const Routes = [
 
   },
   {
-    path: "/citas-medicas",
-    element: <AuthGuard><Citas /></AuthGuard>,
-  },
-  {
-    path: "/paciente",
-    element: <AuthGuard><Paciente /></AuthGuard>,
-  },
-  {
-    path: "/consultorios",
-    element: <AuthGuard><Consultorio /></AuthGuard>,
-  },
+    path: "/eventos",
+    element: <AuthGuard><Evento /></AuthGuard>,
+  }, 
   {
     path: "/usuarios",
     element: <AuthGuard><Usuario /></AuthGuard>,
-  },
-  {
-    path: "/estados",
-    element: <AuthGuard><Estado /></AuthGuard>,
-  },
-  {
-    path: "/medicos",
-    element: <AuthGuard><Medico /></AuthGuard>,
-  },
-  {
-    path: "/pagos",
-    element: <AuthGuard><Pago /></AuthGuard>,
-  },
+  }, 
   {
     path: "/error",
     element: <Error />,

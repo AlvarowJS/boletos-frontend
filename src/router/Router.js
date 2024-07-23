@@ -45,7 +45,7 @@ const Router = () => {
     // return '/login'
     const user = getkey()
     if(user != null){
-      return '/citas-medicas'
+      return '/eventos'
     }
     else{
       return '/login'

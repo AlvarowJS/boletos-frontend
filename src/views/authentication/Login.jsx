@@ -29,7 +29,9 @@ import "@styles/react/pages/page-authentication.scss";
 import './styles/style.css'
 import axios from "axios";
 import { useState } from "react";
-import bdCitas from "../../api/bdCitas";
+import bdBoletas from "../../api/bdBoletos";
+// import bdCitas from "../../api/bdCitas";
+
 
 const Login = () => {
 
@@ -43,23 +45,19 @@ const Login = () => {
 
   const submit = async (data) => {
     try {
-      const response = await bdCitas.post('/v1/login', data);
+      const response = await bdBoletas.post('/v1/login', data);
       const res = response.data;    
       localStorage.setItem('token', res?.api_token);
-      localStorage.setItem('rol', res?.role_id);
-      localStorage.setItem('idu', res?.user);
-      localStorage.setItem('nombres', res?.nombres);
-      localStorage.setItem('apellidos', res?.apellidos);
+      localStorage.setItem('rol', res?.rol);      
+      localStorage.setItem('name', res?.name);      
       setIsError(false)
-      navigate('/citas-medicas')
+      navigate('/eventos')
 
     }
     catch (err) {
       localStorage.setItem('token', '');
-      localStorage.setItem('rol', '');
-      localStorage.setItem('idu', '');
-      localStorage.setItem('nombres', '');
-      localStorage.setItem('apellidos', '');
+      localStorage.setItem('rol', '');      
+      localStorage.setItem('name', '');
       setIsError(true)
     }
   }
@@ -86,7 +84,7 @@ const Login = () => {
             <img className="img_local" src={logo} alt="Logo" style={{ width: 100 }} />
 
             <CardTitle tag="h2" className="fw-bold mb-1 mt-2">
-              Bienvenido a Salaverry Citas Medicas
+              Bienvenido al Sistema de Boletos
             </CardTitle>
             <CardText className="mb-2">
               Porfavor ingrese tu usuario y contraseña
@@ -162,12 +160,12 @@ const Login = () => {
                 Ingresar
               </Button>
             </Form>
-            <p className="text-center mt-2">
+            {/* <p className="text-center mt-2">
               <span className="me-25">Eres nuevo en la plataforma?</span>
               <Link to="/register">
                 <span>Crea una cuenta</span>
               </Link>
-            </p>
+            </p> */}
 
           </Col>
         </Col>

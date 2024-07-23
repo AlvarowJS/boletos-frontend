@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Input, Label, Row } from "reactstrap";
 import { useForm } from "react-hook-form";
-import bdCitas from "../../api/bdCitas";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import TablaUsuario from "./TablaUsuario";
 import FormUsuario from "./FormUsuario";
+import bdBoletas from "../../api/bdBoletos";
 const MySwal = withReactContent(Swal);
 const URL = "/v1/users";
 
@@ -42,7 +42,7 @@ const Usuario = () => {
   };
 
   useEffect(() => {
-    bdCitas
+    bdBoletas
       .get(`${URL}`, getAuthHeaders())
       .then((res) => {
         setData(res.data);
@@ -57,7 +57,7 @@ const Usuario = () => {
 
   // Crear Usuario
   const crearUsuario = (data) => {
-    bdCitas
+    bdBoletas
       .post(URL, data, getAuthHeaders())
       .then((res) => {
         reset(defaulValuesForm);
@@ -92,7 +92,7 @@ const Usuario = () => {
 
   // Actualiza Consultorio (PUT)
   const actualizarUsuario = (id, data) => {
-    bdCitas
+    bdBoletas
       .put(`${URL}/${id}`, data, getAuthHeaders())
       .then((res) => {
         reset(defaulValuesForm);
@@ -129,7 +129,7 @@ const Usuario = () => {
       buttonsStyling: false,
     }).then(function (result) {
       if (result.value) {
-        bdCitas
+        bdBoletas
           .delete(`${URL}/${id}`, getAuthHeaders())
           .then((res) => {
             setRefresh(!refresh);
@@ -157,7 +157,7 @@ const Usuario = () => {
   const actualizarUsuarioId = (id) => {
     toggleActualizacion.call();
     setActualizacion(true);
-    bdCitas
+    bdBoletas
       .get(`${URL}/${id}`, getAuthHeaders())
       .then((res) => {
         reset(res.data);

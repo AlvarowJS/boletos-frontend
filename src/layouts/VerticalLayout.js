@@ -18,10 +18,10 @@ const VerticalLayout = (props) => {
   const rol = localStorage?.getItem("rol");
   let filteredNavigation = [];
 
-  if (rol == "2") {
+  if (rol == 2) {
     // filteredNavigation = navigation.slice(0, 2); // Obtener los primeros dos elementos del array
     filteredNavigation = [navigation[0],navigation[1]]
-  } else if (rol == "1") {
+  } else if (rol == 1) {
     filteredNavigation = navigation; // Obtener el array completo
   }
   return (

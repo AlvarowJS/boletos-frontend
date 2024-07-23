@@ -6,7 +6,7 @@ import logo from "../assets/images/logo/logo_nav.png";
 //Template config options
 const themeConfig = {
   app: {
-    appName: "SALAVERRY",
+    appName: "BOLETOS",
     appLogoImage: logo,
   },
   layout: {
