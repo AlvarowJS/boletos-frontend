@@ -1,4 +1,4 @@
-import { Calendar, Check, DollarSign, Edit3, Hash, UserCheck, UserPlus, Users } from "react-feather";
+import { Calendar, Check, DollarSign, Edit3, Hash, Printer, Tag, UserCheck, UserPlus, Users } from "react-feather";
 
 export default [
   {
@@ -6,6 +6,12 @@ export default [
     title: "Eventos",
     icon: <Calendar size={20} />,
     navLink: "/eventos",
+  },
+  {
+    id: "Tickets",
+    title: "Tickets",
+    icon: <Tag size={20} />,
+    navLink: "/tickets",
   },
   {
     id: "Usuarios",

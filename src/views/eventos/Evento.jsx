@@ -191,6 +191,9 @@ const Evento = () => {
                 filter={filter}
                 search={search}
                 actualizarEventoId={actualizarEventoId}
+                token={token}
+                refresh={refresh}
+                setRefresh={setRefresh}
             />
             <FormEvent
                 toggle={toggle}
