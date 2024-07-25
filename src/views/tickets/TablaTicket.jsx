@@ -41,8 +41,7 @@ const TablaTicket = ({
                 className="react-datatable"
                 columns={columns}
                 paginationServer
-                paginationTotalRows={total} 
-                onChangeRowsPerPage={page} 
+             
                 // onChangePage={handlePageChange} 
                 data={search ? filter : data}
             />

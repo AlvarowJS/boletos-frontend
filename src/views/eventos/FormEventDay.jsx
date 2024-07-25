@@ -33,6 +33,17 @@ const FormEventDay = ({
                         />
                     </div>
                     <div className='form-group my-2'>
+                        <label htmlFor="eventName">
+                            Bloque de fichas
+                        </label>
+                        <input
+                            className="form-control"
+                            type="number"
+                            placeholder='ingrese el bloque es va generar. ejm: bloque 1'
+                            {...register('group')}
+                        />
+                    </div>
+                    {/* <div className='form-group my-2'>
                         <label htmlFor="">
                             Día
                         </label>
@@ -44,7 +55,7 @@ const FormEventDay = ({
                             }
                         </select>
                   
-                    </div>
+                    </div> */}
                     <button className='btn btn-primary mb-2'>Enviar</button>
                 </form>
             </ModalBody>

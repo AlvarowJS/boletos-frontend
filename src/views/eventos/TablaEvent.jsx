@@ -84,6 +84,7 @@ const TablaEvent = ({
                 <th>ID</th>
                 <th>Cantidad de Tickets</th>
                 <th>Fecha de referencia</th>
+                <th>Bloque</th>
               </tr>
             </thead>
             <tbody>
@@ -92,6 +93,7 @@ const TablaEvent = ({
                   <td>{day.id}</td>
                   <td>{day.ticketAmount}</td>
                   <td>{new Date(day.refDate).toLocaleDateString()}</td>
+                  <td>{day.group}</td>
                 </tr>
               ))}
             </tbody>
