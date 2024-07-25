@@ -48,8 +48,8 @@ const TicketPdf = ({ data }) => {
     };
 
     const splitDescription = (description) => {
-        const lines = description.split('\r\n');
-        const half = Math.ceil(lines.length / 2);
+        const lines = description?.split('\r\n');
+        const half = Math.ceil(lines?.length / 2);
         const firstHalf = lines.slice(0, half).join('\r\n');
         const secondHalf = lines.slice(half).join('\r\n');
         return [firstHalf, secondHalf];

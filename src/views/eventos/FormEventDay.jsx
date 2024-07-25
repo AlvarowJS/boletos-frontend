@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 const FormEventDay = ({
-    modal, toggle, handleSubmit, register, submit, toggleActualizacion, days
+    modal, toggle, handleSubmit, register, submit, toggleActualizacion, actualizacion
 }) => {
     return (
         <Modal isOpen={modal} toggle={toggle || toggleActualizacion} size='lg'>
@@ -19,6 +19,7 @@ const FormEventDay = ({
                             className="form-control"
                             type="number"
                             placeholder='ingrese número de tickets a imprimir'
+                            disabled={actualizacion}
                             {...register('ticketAmount')}
                         />
                     </div>
@@ -38,10 +39,17 @@ const FormEventDay = ({
                         </label>
                         <input
                             className="form-control"
-                            type="number"
+                            type="text"
                             placeholder='ingrese el bloque es va generar. ejm: bloque 1'
                             {...register('group')}
                         />
+                    </div>
+
+                    <div class="form-check my-2">
+                        <input class="form-check-input" type="checkbox" value="" id="multiday" {...register('multiday')} />
+                            <label class="form-check-label" for="multiday">
+                                Multifecha
+                            </label>
                     </div>
                     {/* <div className='form-group my-2'>
                         <label htmlFor="">

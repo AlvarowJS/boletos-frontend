@@ -46,13 +46,12 @@ const Ticket = () => {
 
     useEffect(() => {
         bdBoletas
-            .get(`${URL}?eventDay=${evento?.value}&page=${page}`, getAuthHeaders())
+            .get(`${URL}?eventDay=${evento?.value}`, getAuthHeaders())
             .then((res) => {
                 setData(res?.data?.data);
                 setTotal(res.data?.total);
                 setValid(res.data?.valid);
                 setInvalid(res.data?.invalid);
-                setTotalPages(res.data?.last_page);
             })
             .catch((err) => { });
     }, [refresh, evento]);
@@ -169,37 +168,33 @@ const Ticket = () => {
             {/* <button className="btn btn-success" onClick={downloadAllPDFs}>
                 Descargar Todos los Tickets
             </button> */}
-            <PDFDownloadLink document={<TicketPdf
-                data={data}
-            />} fileName="tickets.pdf">
-                {({ blob, url, loading, error }) =>
-                    loading ? (
-                        'Loading document...'
-                    ) : (
-                        <button className="btn btn-success">Descargar Tickets</button>
-                    )
-                }
-            </PDFDownloadLink>
-            {/* <PDFViewer style={{ width: '100%', height: '600px' }}>
-                <TicketPdf data={data} />
-            </PDFViewer> */}
-            <TablaTicket
-                data={data}
-                filter={filter}
-                search={search}
-                page={page}
-                setPage={setPage}
-                total={total}
 
-            />
-            <button className="btn btn-success"
-                onClick={abrirScaner}
-            >
-                {
-                    escanear ? 'Ocultar escaner' : 'Escanear QR'
-                }
-                
-            </button>
+            <Row>
+                <Col sm="6">
+                    <PDFDownloadLink document={<TicketPdf
+                        data={data}
+                    />} fileName="tickets.pdf">
+                        {({ blob, url, loading, error }) =>
+                            loading ? (
+                                'Loading document...'
+                            ) : (
+                                <button className="btn btn-success">Descargar Tickets</button>
+                            )
+                        }
+                    </PDFDownloadLink>
+                </Col>
+                <Col sm="6">
+                    <button className="btn btn-success"
+                        onClick={abrirScaner}
+                    >
+                        {
+                            escanear ? 'Ocultar escaner' : 'Escanear QR'
+                        }
+
+                    </button>
+                </Col>
+
+            </Row>
             <div className="d-flex justify-content-center">
                 {
                     escanear ? (
@@ -213,6 +208,18 @@ const Ticket = () => {
                 }
 
             </div>
+            {/* <PDFViewer style={{ width: '100%', height: '600px' }}>
+                <TicketPdf data={data} />
+            </PDFViewer> */}
+            <TablaTicket
+                data={data}
+                filter={filter}
+                search={search}
+                total={total}
+
+            />
+
+
         </div>
     );
 };

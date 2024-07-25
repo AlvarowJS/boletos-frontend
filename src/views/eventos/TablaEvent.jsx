@@ -43,7 +43,40 @@ const TablaEvent = ({
   const toggleActualizacion = () => {
     setModal(!modal);
   };
-  const actualizarDiaEvento = () => {};
+  const actualizarDiaEvento = (id, data) => {    
+    bdBoletas
+        .put(`${URL}/${id}`, data, getAuthHeaders())
+        .then((res) => {
+            reset(defaultValueFrom);
+            toggle.call();
+            setRefresh(!refresh);
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Día Actualizado",
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        })
+        .catch((err) => {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Contacte con soporte",
+                showConfirmButton: false,
+            });
+        });
+  };
+  const actualizarDiaEventoId = (id) => {
+    toggleActualizacion.call()
+    setActualizacion(true);
+    bdBoletas
+        .get(`${URL}/${id}`, getAuthHeaders())
+        .then((res) => {
+            reset(res.data.data);
+        })
+        .catch((err) => null);
+  };
   const crearDiaEvento = (data) => {
     bdBoletas
       .post(`${URL}`, data, getAuthHeaders())
@@ -70,6 +103,8 @@ const TablaEvent = ({
       crearDiaEvento(newData);
     }
   };
+
+
   const ExpandedComponent = ({ data }) => {
     return (
       <div className="mx-5">
@@ -85,6 +120,8 @@ const TablaEvent = ({
                 <th>Cantidad de Tickets</th>
                 <th>Fecha de referencia</th>
                 <th>Bloque</th>
+                <th>Multifecha?</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -92,8 +129,13 @@ const TablaEvent = ({
                 <tr key={index}>
                   <td>{day.id}</td>
                   <td>{day.ticketAmount}</td>
-                  <td>{new Date(day.refDate).toLocaleDateString()}</td>
+                  <td>{day.refDate}</td>
                   <td>{day.group}</td>
+                  <td>{day.multiday ? 'si': 'no'}</td>
+                  <td>
+                    <button className="btn btn-success" onClick={() =>  actualizarDiaEventoId(day?.id)}>Editar</button>
+                  </td>
+
                 </tr>
               ))}
             </tbody>
@@ -216,6 +258,7 @@ const TablaEvent = ({
         register={register}
         reset={reset}
         days={days}
+        actualizacion={actualizacion}
       />
     </Card>
   );

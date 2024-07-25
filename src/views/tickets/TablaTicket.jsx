@@ -2,9 +2,8 @@ import React from "react";
 import { Badge, Card } from 'reactstrap'
 import DataTable from 'react-data-table-component'
 const TablaTicket = ({
-    data, filter, search, page, setPage, total
+    data, filter, search
 }) => {
-    console.log(page, "?")
     const columns = [
 
         {
@@ -40,9 +39,6 @@ const TablaTicket = ({
                 pagination
                 className="react-datatable"
                 columns={columns}
-                paginationServer
-             
-                // onChangePage={handlePageChange} 
                 data={search ? filter : data}
             />
         </Card>

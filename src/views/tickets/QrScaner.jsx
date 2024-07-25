@@ -16,8 +16,9 @@ const QrScaner = ({
                         if (!!result) {
                             const decryptedCode = CryptoJS.AES.decrypt(result.text, 'secret-key').toString(CryptoJS.enc.Utf8);
                             setCodeQr(decryptedCode);
-                            const audio = new Audio(beepSound);
+                            const audio = new Audio(beepSound);                            
                             audio.play();
+                            registrarTicket()
                         }
                         if (!!error) {
                             console.info(error);
@@ -29,7 +30,7 @@ const QrScaner = ({
             <div className='d-flex gap-2'>
                 <p>Código: {codeQr}</p>
                 <button 
-                onClick={registrarTicket}
+                // onClick={registrarTicket}
                 className='btn btn-success'>Registrar</button>
             </div>
 
