@@ -13,27 +13,27 @@ const FormUsuario = ({
         <form onSubmit={handleSubmit(submit)}>
           <div className='form-group my-2'>
             <label htmlFor="">
-              Nombres
+              Nombre completo
             </label>
             <input
               className="form-control"
               type="text"
-              placeholder='ingrese nombres'
-              {...register('nombres')}
+              placeholder='ingrese nombre completo'
+              {...register('name')}
             />
           </div>
+ 
           <div className='form-group my-2'>
             <label htmlFor="">
-              Apellidos
+              Teléfono
             </label>
             <input
               className="form-control"
               type="text"
-              placeholder='ingrese el apellido completo'
-              {...register('apellidos')}
+              placeholder='Ingrese su número de celular'
+              {...register('phone')}
             />
           </div>
-
           <div className='form-group my-2'>
             <label htmlFor="">
               Email

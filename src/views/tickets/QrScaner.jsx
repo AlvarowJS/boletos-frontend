@@ -6,7 +6,7 @@ const QrScaner = ({
     setCodeQr, codeQr, registrarTicket
 }) => {
     const [result, setResult] = useState('');
-
+    console.log(typeof registrarTicket)
     return (
         <div>
             <h1>Escanear Código QR</h1>
@@ -14,11 +14,12 @@ const QrScaner = ({
                 <QrReader
                     onResult={(result, error) => {
                         if (!!result) {
-                            const decryptedCode = CryptoJS.AES.decrypt(result.text, 'secret-key').toString(CryptoJS.enc.Utf8);
+                            const decryptedCode = CryptoJS.AES.decrypt(result.text, 'secret-key').toString(CryptoJS.enc.Utf8);                            
                             setCodeQr(decryptedCode);
                             const audio = new Audio(beepSound);                            
+                            registrarTicket();
                             audio.play();
-                            registrarTicket()
+                            
                         }
                         if (!!error) {
                             console.info(error);
@@ -30,7 +31,7 @@ const QrScaner = ({
             <div className='d-flex gap-2'>
                 <p>Código: {codeQr}</p>
                 <button 
-                // onClick={registrarTicket}
+                onClick={registrarTicket}
                 className='btn btn-success'>Registrar</button>
             </div>
 

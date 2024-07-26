@@ -20,6 +20,7 @@ const FormEventDay = ({
                             type="number"
                             placeholder='ingrese número de tickets a imprimir'
                             disabled={actualizacion}
+                            min="1" max="400"
                             {...register('ticketAmount')}
                         />
                     </div>
@@ -31,6 +32,28 @@ const FormEventDay = ({
                             className="form-control"
                             type="date"
                             {...register('refDate')}
+                        />
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="eventName">
+                            Precio
+                        </label>
+                        <input
+                            className="form-control"
+                            type="number"
+                            placeholder='ingrese el precio de los boletos'
+                            {...register('price')}
+                        />
+                    </div>
+                    <div className='form-group my-2'>
+                        <label htmlFor="eventName">
+                            Artista
+                        </label>
+                        <input
+                            className="form-control"
+                            type="text"
+                            placeholder='ingrese el artista que participara'
+                            {...register('artist')}
                         />
                     </div>
                     <div className='form-group my-2'>

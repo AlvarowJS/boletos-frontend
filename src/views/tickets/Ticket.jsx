@@ -74,8 +74,9 @@ const Ticket = () => {
     const abrirScaner = () => {
         setEscanear(!escanear)
     }
-
+    
     const registrarTicket = () => {
+        console.log("sea ctivo",codeQr)
         if (codeQr) {
             bdBoletas.put(`${URL}/${codeQr}`, null, getAuthHeaders())
                 .then(res => {
@@ -95,7 +96,15 @@ const Ticket = () => {
                             title: "Ticket no encontrado",
                             showConfirmButton: false,
                         });
-                    } else {
+                    } else if (err.response.status == 412) {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Ticket fuera de fecha",
+                            showConfirmButton: false,
+                        });
+                    }
+                    else {
                         Swal.fire({
                             position: "center",
                             icon: "error",
@@ -113,7 +122,7 @@ const Ticket = () => {
             " | " +
             option?.refDate +
             " | " +
-            option?.day?.nameDay,
+            option?.group,
     }));
 
     const downloadAllPDFs = () => {

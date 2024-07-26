@@ -20,8 +20,7 @@ const Usuario = () => {
   const { handleSubmit, register, reset } = useForm();
   const [refresh, setRefresh] = useState(false);
   const defaulValuesForm = {
-    nombres: "",
-    apellidos: "",
+    name: "",    
     email: "",
     password: "",
     status: "",
@@ -49,6 +48,17 @@ const Usuario = () => {
       })
       .catch((err) => {});
   }, [refresh]);
+
+  useEffect(() => {
+    setFilter(
+        data?.filter(
+            (e) =>
+                e.name.toLowerCase()
+                    .indexOf(search?.toLowerCase()) !== -1
+        )
+    );
+}, [search]);
+
   const handleFilter = (e) => {
     setSearch(e.target.value);
   };

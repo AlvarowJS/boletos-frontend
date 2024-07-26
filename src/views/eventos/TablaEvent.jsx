@@ -121,6 +121,8 @@ const TablaEvent = ({
                 <th>Fecha de referencia</th>
                 <th>Bloque</th>
                 <th>Multifecha?</th>
+                <th>Precio</th>
+                <th>Artista</th>
                 <th>Acción</th>
               </tr>
             </thead>
@@ -132,6 +134,8 @@ const TablaEvent = ({
                   <td>{day.refDate}</td>
                   <td>{day.group}</td>
                   <td>{day.multiday ? 'si': 'no'}</td>
+                  <td>{day.price} $</td>
+                  <td>{day.artist}</td>
                   <td>
                     <button className="btn btn-success" onClick={() =>  actualizarDiaEventoId(day?.id)}>Editar</button>
                   </td>

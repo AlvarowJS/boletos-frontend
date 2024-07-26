@@ -16,15 +16,15 @@ const TablaUsuario = ({
         },
         {
             sortable: true,
-            name: 'Nombres',
+            name: 'Nombre completo',
             minWidth: '25px',
-            selector: row => row?.nombres
+            selector: row => row?.name
         },
         {
             sortable: true,
-            name: 'Apellidos',
+            name: 'Número',
             minWidth: '50px',
-            selector: row => row?.apellidos
+            selector: row => row?.phone
         },
         {
             sortable: true,

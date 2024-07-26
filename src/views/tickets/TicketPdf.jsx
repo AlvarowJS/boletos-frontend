@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Text, View, Document, StyleSheet, pdf, Image } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import QRCode from 'qrcode';
 import encabezado from "../../assets/images/portada/encabezado.png";
 import CryptoJS from 'crypto-js';
 
-// Calcula cuántas tarjetas caben en una página A4, considerando márgenes y espaciado.
-const CARDS_PER_PAGE = 4;
+// Define the exact size of the page in points (7.6 x 10.2 cm)
+const PAGE_WIDTH = 215.46;  // 7.6 cm * 28.35 points/cm
+const PAGE_HEIGHT = 288.57; // 10.2 cm * 28.35 points/cm
+
+const CARDS_PER_PAGE = 1;
 
 const TicketPdf = ({ data }) => {
-
     const [qrCodes, setQrCodes] = useState([]);
 
     useEffect(() => {
-        // Generar los códigos QR para cada dato
+        // Generate QR codes for each item
         const generateQRCodes = async () => {
             const qrCodePromises = data.map(async (item) => {
-                // Encriptar el código
+                // Encrypt the code
                 const encryptedCode = CryptoJS.AES.encrypt(item.code, 'secret-key').toString();
                 const qrCodeUrl = await QRCode.toDataURL(encryptedCode);
                 return qrCodeUrl;
@@ -27,7 +29,7 @@ const TicketPdf = ({ data }) => {
         generateQRCodes();
     }, [data]);
 
-    // Divide los datos en bloques para cada página.
+    // Divide the data into chunks for each page
     const pages = [];
     for (let i = 0; i < data?.length; i += CARDS_PER_PAGE) {
         pages.push(data.slice(i, i + CARDS_PER_PAGE));
@@ -44,7 +46,6 @@ const TicketPdf = ({ data }) => {
             'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
         ];
         return `${dayNum} DE ${monthNames[monthNum]} ${yearNum}`;
-
     };
 
     const splitDescription = (description) => {
@@ -58,19 +59,18 @@ const TicketPdf = ({ data }) => {
     return (
         <Document>
             {pages.map((pageData, pageIndex) => (
-                <Page key={pageIndex} style={styles.body}>
+                <Page key={pageIndex} size={{ width: PAGE_WIDTH, height: PAGE_HEIGHT }} style={styles.body}>
                     <View style={styles.container}>
-
                         {pageData.map((item, index) => (
                             <View key={index} style={styles.card}>
-                                <Image
-                                    style={styles.encabezado}
-                                    src={encabezado}
-                                />
+                                <Image style={styles.encabezado} src={encabezado} />
                                 <Text style={styles.title}>
                                     QUE INCLUYE TU ENTRADA A {item?.event_day?.event?.eventName}
                                 </Text>
-                                <View style={styles.descriptionContainer}>
+
+                                <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>
+                                {/* 
+                                    <View style={styles.descriptionContainer}>
                                     <View style={styles.descriptionColumn}>
                                         <Text style={styles.text}>
                                             {splitDescription(item?.event_day?.event?.description)[0]}
@@ -81,18 +81,19 @@ const TicketPdf = ({ data }) => {
                                         <Text style={styles.text}>
                                             {splitDescription(item?.event_day?.event?.description)[1]}
                                         </Text>
+                                    </View> 
                                     </View>
-                                </View>
-                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>
-                                <Text style={styles.subtitle}>{item?.event_day?.event?.place}</Text>
-                                {qrCodes[index] && <Image style={styles.qrCodeBig} src={qrCodes[index]} />}
-                                <View style={styles.separacion}>
+                                    */}
 
-                                </View>
+                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>
+                                {/* <Text style={styles.subtitle}>{item?.event_day?.event?.place}</Text> */}
+                                <Text style={styles.subtitle}>{item?.event_day?.artist}</Text>
+                                {qrCodes[index] && <Image style={styles.qrCodeBig} src={qrCodes[index]} />}
+                                <View style={styles.separacion} />
                                 <View style={styles.qrclient}>
                                     <View>
                                         <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>
-                                        <Text style={styles.subtitle}>{item?.event_day?.event?.place}</Text>
+                                        <Text style={styles.subtitle}>{item?.event_day?.artist}</Text>
                                     </View>
                                     <View>
                                         {qrCodes[index] && <Image style={styles.qrCode} src={qrCodes[index]} />}
@@ -109,13 +110,13 @@ const TicketPdf = ({ data }) => {
 
 const styles = StyleSheet.create({
     body: {
-        padding: 20,
+        padding: 10, // Reduce padding to fit within the smaller page size
         backgroundColor: '#f5f5f5',
         flexDirection: 'column',
     },
     encabezado: {
-        width: 200,
-        height: 50
+        width: 120,
+        height: 40,
     },
     container: {
         display: 'flex',
@@ -125,34 +126,36 @@ const styles = StyleSheet.create({
     },
     card: {
         display: 'flex',
-        width: 215.46,
-        height: 289.17,
-        marginBottom: 10,
+        width: 200,  // Adjusted width for the smaller page
+        height: 260, // Adjusted height for the smaller page
+        // marginBottom: 4,
         backgroundColor: 'white',
         border: '1px solid black',
-        padding: 10,
+        paddingX: 10,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',
     },
     title: {
-        fontSize: 10,
+        fontSize: 10, // Adjusted font size
         color: '#333',
         marginBottom: 5,
         textAlign: 'center',
+        fontWeight: 'bold'
     },
     subtitle: {
-        fontSize: 10,
+        fontSize: 10, // Adjusted font size
         color: '#333',
         fontWeight: 'bold',
-        marginBottom: 5,
+        // marginBottom: 5,
     },
     text: {
-        fontSize: 5,
+        fontSize: 8, // Adjusted font size
     },
     separacion: {
         borderTop: '2px dotted #000',
-        width: '100%'
+        marginBottom: 2,
+        width: '100%',
     },
     descriptionContainer: {
         display: 'flex',
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     descriptionColumn: {
         width: '45%',
@@ -171,12 +174,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     qrCodeBig: {
-        width: 80,
-        height: 80,
+        width: 75, // Adjusted QR code size
+        height: 75,
     },
     qrCode: {
-        width: 50,
-        height: 50,
+        width: 40, // Adjusted QR code size
+        height: 40,
     },
     qrclient: {
         display: 'flex',
