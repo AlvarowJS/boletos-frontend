@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 const FormUsuario = ({
-  modal, toggle, handleSubmit, register, submit, toggleActualizacion
+  modal, toggle, handleSubmit, register, submit, toggleActualizacion, errors
 }) => {
   return (
     <Modal isOpen={modal} toggle={toggle || toggleActualizacion} size='lg'>
@@ -22,7 +22,7 @@ const FormUsuario = ({
               {...register('name')}
             />
           </div>
- 
+
           <div className='form-group my-2'>
             <label htmlFor="">
               Teléfono
@@ -33,6 +33,15 @@ const FormUsuario = ({
               placeholder='Ingrese su número de celular'
               {...register('phone')}
             />
+          </div>
+          <div className='form-group my-2'>
+            <label htmlFor="">
+              ROL
+            </label>
+            <select className="form-select" id="role_id" {...register("role_id")}>
+              <option value="1">Adminitrador</option>
+              <option value="2">Usuario</option>      
+            </select>
           </div>
           <div className='form-group my-2'>
             <label htmlFor="">
@@ -51,9 +60,15 @@ const FormUsuario = ({
             </label>
             <input
               className="form-control"
-              type="password"              
-              {...register('password')}
+              type="password"
+              {...register('password', { required: true, minLength: 8 })}
             />
+            {errors.password && errors.password.type === "required" && (
+              <span className='text-warning'>Este campo es obligatorio</span>
+            )}
+            {errors.password && errors.password.type === "minLength" && (
+              <span className='text-warning'>La contraseña debe tener 8 caracteres como minimo</span>
+            )}
           </div>
           <div className='form-group my-2'>
             <label htmlFor="">

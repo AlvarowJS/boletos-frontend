@@ -57,8 +57,7 @@ const AuthGuard = ({ children }) => {
           // Aquí debe validar su token con su servidor para asegurarse de que es válido
           // Si el token no es válido, llame a "navigate" para redirigir al usuario a la página de inicio de sesión
           if (rol == 1) {
-          } else if (rol == 2) {
-            console.log("llega")
+          } else if (rol == 2) {            
             const restrictedRoutes = ["/eventos", "/usuarios"];
             // console.log(window.location.pathname, "Ga")
             if (restrictedRoutes.includes(window.location.pathname)) {

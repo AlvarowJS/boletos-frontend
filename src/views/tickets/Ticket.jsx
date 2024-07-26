@@ -13,6 +13,7 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 const Ticket = () => {
     const token = localStorage.getItem("token");
+    const rol = localStorage.getItem("rol");
     const [search, setSearch] = useState();
     const [filter, setFilter] = useState();
     const [evento, setEvento] = useState();
@@ -74,9 +75,11 @@ const Ticket = () => {
     const abrirScaner = () => {
         setEscanear(!escanear)
     }
-    
+    const actualizarData = () => {
+        setRefresh(!refresh)
+    }
     const registrarTicket = () => {
-        console.log("sea ctivo",codeQr)
+        console.log("sea ctivo", codeQr)
         if (codeQr) {
             bdBoletas.put(`${URL}/${codeQr}`, null, getAuthHeaders())
                 .then(res => {
@@ -115,6 +118,12 @@ const Ticket = () => {
                 })
         }
     }
+    useEffect(() => {
+        if (codeQr) {
+            registrarTicket();
+        }
+    }, [codeQr]);
+
     const options = eventosData?.map((option) => ({
         value: option?.id,
         label:
@@ -179,20 +188,25 @@ const Ticket = () => {
             </button> */}
 
             <Row>
-                <Col sm="6">
-                    <PDFDownloadLink document={<TicketPdf
-                        data={data}
-                    />} fileName="tickets.pdf">
-                        {({ blob, url, loading, error }) =>
-                            loading ? (
-                                'Loading document...'
-                            ) : (
-                                <button className="btn btn-success">Descargar Tickets</button>
-                            )
-                        }
-                    </PDFDownloadLink>
+                <Col sm="3">
+                    {
+                        rol == 1 ? (
+                            <PDFDownloadLink document={<TicketPdf
+                                data={data}
+                            />} fileName="tickets.pdf">
+                                {({ blob, url, loading, error }) =>
+                                    loading ? (
+                                        'Loading document...'
+                                    ) : (
+                                        <button className="btn btn-success">Descargar Tickets</button>
+                                    )
+                                }
+                            </PDFDownloadLink>
+                        ) : null
+                    }
+
                 </Col>
-                <Col sm="6">
+                <Col sm="3">
                     <button className="btn btn-success"
                         onClick={abrirScaner}
                     >
@@ -200,6 +214,13 @@ const Ticket = () => {
                             escanear ? 'Ocultar escaner' : 'Escanear QR'
                         }
 
+                    </button>
+                </Col>
+                <Col sm="3">
+                    <button className="btn btn-success"
+                        onClick={actualizarData}
+                    >                        
+                            Actualizar data                        
                     </button>
                 </Col>
 
@@ -217,6 +238,8 @@ const Ticket = () => {
                 }
 
             </div>
+
+
             {/* <PDFViewer style={{ width: '100%', height: '600px' }}>
                 <TicketPdf data={data} />
             </PDFViewer> */}

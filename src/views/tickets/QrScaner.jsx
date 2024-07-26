@@ -17,7 +17,7 @@ const QrScaner = ({
                             const decryptedCode = CryptoJS.AES.decrypt(result.text, 'secret-key').toString(CryptoJS.enc.Utf8);                            
                             setCodeQr(decryptedCode);
                             const audio = new Audio(beepSound);                            
-                            registrarTicket();
+                            // registrarTicket();
                             audio.play();
                             
                         }

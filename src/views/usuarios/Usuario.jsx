@@ -17,10 +17,10 @@ const Usuario = () => {
   const [modal, setModal] = useState(false);
   const [modalUbicacion, setModalUbicacion] = useState(false);
   const [actualizacion, setActualizacion] = useState(false);
-  const { handleSubmit, register, reset } = useForm();
+  const { handleSubmit, register, reset, formState: { errors } } = useForm();
   const [refresh, setRefresh] = useState(false);
   const defaulValuesForm = {
-    name: "",    
+    name: "",
     email: "",
     password: "",
     status: "",
@@ -46,18 +46,18 @@ const Usuario = () => {
       .then((res) => {
         setData(res.data);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, [refresh]);
 
   useEffect(() => {
     setFilter(
-        data?.filter(
-            (e) =>
-                e.name.toLowerCase()
-                    .indexOf(search?.toLowerCase()) !== -1
-        )
+      data?.filter(
+        (e) =>
+          e.name.toLowerCase()
+            .indexOf(search?.toLowerCase()) !== -1
+      )
     );
-}, [search]);
+  }, [search]);
 
   const handleFilter = (e) => {
     setSearch(e.target.value);
@@ -223,6 +223,7 @@ const Usuario = () => {
         register={register}
         reset={reset}
         getAuthHeaders={getAuthHeaders}
+        errors={errors}
       />
     </>
   );

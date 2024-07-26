@@ -28,6 +28,12 @@ const TablaUsuario = ({
         },
         {
             sortable: true,
+            name: 'Rol',
+            minWidth: '50px',
+            selector: row => row?.role_id == 1 ? 'Adminitrador' : 'Usuario'
+        },
+        {
+            sortable: true,
             name: 'Email',
             minWidth: '50px',
             selector: row => row?.email

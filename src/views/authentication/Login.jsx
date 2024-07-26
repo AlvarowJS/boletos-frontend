@@ -51,7 +51,7 @@ const Login = () => {
       localStorage.setItem('rol', res?.rol);      
       localStorage.setItem('name', res?.name);      
       setIsError(false)
-      navigate('/eventos')
+      navigate('/tickets')
 
     }
     catch (err) {
