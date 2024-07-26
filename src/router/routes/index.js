@@ -52,13 +52,15 @@ const AuthGuard = ({ children }) => {
         setMyRol(res?.data?.role_id)
         const rol = res?.data?.role_id
         if (!token) {
-          // navigate("/login");
+          navigate("/login");
         } else {
           // Aquí debe validar su token con su servidor para asegurarse de que es válido
           // Si el token no es válido, llame a "navigate" para redirigir al usuario a la página de inicio de sesión
-          if (rol == "1") {
-          } else if (rol == "2") {
-            const restrictedRoutes = ["eventos"];
+          if (rol == 1) {
+          } else if (rol == 2) {
+            console.log("llega")
+            const restrictedRoutes = ["/eventos", "/usuarios"];
+            // console.log(window.location.pathname, "Ga")
             if (restrictedRoutes.includes(window.location.pathname)) {
               navigate("/error");
             }
@@ -67,8 +69,6 @@ const AuthGuard = ({ children }) => {
             navigate("/login")
           }
         }
-
-
       })
       .catch(err => console.log(err))
 
@@ -115,15 +115,15 @@ const Routes = [
   {
     path: "/eventos",
     element: <AuthGuard><Evento /></AuthGuard>,
-  }, 
+  },
   {
     path: "/tickets",
     element: <AuthGuard><Ticket /></AuthGuard>,
-  }, 
+  },
   {
     path: "/usuarios",
     element: <AuthGuard><Usuario /></AuthGuard>,
-  }, 
+  },
   {
     path: "/error",
     element: <Error />,
