@@ -187,7 +187,7 @@ const Ticket = () => {
                 Descargar Todos los Tickets
             </button> */}
 
-            <Row>
+            <Row className="g-1">
                 <Col sm="3">
                     {
                         rol == 1 ? (
