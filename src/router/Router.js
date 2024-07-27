@@ -21,7 +21,7 @@ import { getUserData, getHomeRouteForLoggedInUser, getkey } from '../utility/Uti
 
 // ** Components
 const Login = lazy(() => import('../views/authentication/Login'))
-const Register = lazy(() => import('../views/authentication/Register'))
+// const Register = lazy(() => import('../views/authentication/Register'))
 // const ForgotPassword = lazy(() => import('../views/authentication/ForgotPassword'))
 // const Validation = lazy(() => import('../views/authentication/Validation'))
 // const ResetPassword = lazy(() => import('../views/authentication/ResetPassword'))
@@ -65,11 +65,11 @@ const Router = () => {
       element: <BlankLayout />,
       children: [{ path: '/login', element: <Login /> }]
     },
-    {
-      path: '/register',
-      element: <BlankLayout />,
-      children: [{ path: '/register', element: <Register /> }]
-    },
+    // {
+    //   path: '/register',
+    //   element: <BlankLayout />,
+    //   children: [{ path: '/register', element: <Register /> }]
+    // },
     // {
     //   path: '/validation',
     //   element: <BlankLayout />,
