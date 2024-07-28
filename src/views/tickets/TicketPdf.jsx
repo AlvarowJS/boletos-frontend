@@ -22,7 +22,7 @@ const TicketPdf = ({ data }) => {
                 const qrCodeUrl = await QRCode.toDataURL(encryptedCode);
                 return qrCodeUrl;
             });
-            const qrCodes = await Promise.all(qrCodePromises);
+            const qrCodes = await Promise.all(qrCodePromises);            
             setQrCodes(qrCodes);
         };
 
@@ -68,27 +68,10 @@ const TicketPdf = ({ data }) => {
                                     QUE INCLUYE TU ENTRADA A {item?.event_day?.event?.eventName}
                                 </Text>
 
-                                <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>
-                                {/* 
-                                    <View style={styles.descriptionContainer}>
-                                    <View style={styles.descriptionColumn}>
-                                        <Text style={styles.text}>
-                                            {splitDescription(item?.event_day?.event?.description)[0]}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.divider} />
-                                    <View style={styles.descriptionColumn}>
-                                        <Text style={styles.text}>
-                                            {splitDescription(item?.event_day?.event?.description)[1]}
-                                        </Text>
-                                    </View> 
-                                    </View>
-                                    */}
-
-                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>
-                                {/* <Text style={styles.subtitle}>{item?.event_day?.event?.place}</Text> */}
+                                <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>                     
+                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>                                
                                 <Text style={styles.subtitle}>{item?.event_day?.artist}</Text>
-                                {qrCodes[index] && <Image style={styles.qrCodeBig} src={qrCodes[index]} />}
+                                {qrCodes[pageIndex] && <Image style={styles.qrCodeBig} src={qrCodes[pageIndex]} />}
                                 <View style={styles.separacion} />
                                 <View style={styles.qrclient}>
                                     <View>
@@ -96,9 +79,9 @@ const TicketPdf = ({ data }) => {
                                         <Text style={styles.subtitle}>{item?.event_day?.artist}</Text>
                                     </View>
                                     <View>
-                                        {qrCodes[index] && <Image style={styles.qrCode} src={qrCodes[index]} />}
+                                        {qrCodes[pageIndex] && <Image style={styles.qrCode} src={qrCodes[pageIndex]} />}
                                     </View>
-                                </View>
+                                </View>                                
                             </View>
                         ))}
                     </View>
