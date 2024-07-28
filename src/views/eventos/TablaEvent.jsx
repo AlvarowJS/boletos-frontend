@@ -217,7 +217,7 @@ const TablaEvent = ({
         return (
           <>
             <img
-              src={`http://boletos.tms2.nuvola7.com.mx/storage/eventosFotos/${row?.eventImage}`}
+              src={`https://boletos.tms2.nuvola7.com.mx/storage/eventosFotos/${row?.eventImage}`}
               alt=""
               style={{
                 width: 150,
