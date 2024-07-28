@@ -20,6 +20,7 @@ const FormEvent = ({
                             type="text"
                             placeholder='ingrese nombres'
                             {...register('eventName')}
+                            required
                         />
                     </div>
                     <div className='form-group my-2'>
@@ -31,6 +32,7 @@ const FormEvent = ({
                             type="date"
                             placeholder='ingrese el apellido completo'
                             {...register('startDate')}
+                            required
                         />
                     </div>
 
@@ -43,6 +45,7 @@ const FormEvent = ({
                             type="date"
                             placeholder='ingrese correo'
                             {...register('endingDate')}
+                            required
                         />
                     </div>
                     <div className='form-group my-2'>
@@ -53,6 +56,7 @@ const FormEvent = ({
                             className="form-control"
                             type="text"
                             {...register('place')}
+                            required
                         />
                     </div>
                     <div className='form-group my-2'>
@@ -63,6 +67,7 @@ const FormEvent = ({
                             className="form-control"
                             id="description"
                             {...register("description")}
+                            required
                         />
                     </div>
                     <div className='form-group my-2'>

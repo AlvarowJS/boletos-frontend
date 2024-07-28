@@ -22,7 +22,8 @@ const TablaEvent = ({
   const [idEvento, setIdEvento] = useState();
   const { handleSubmit, register, reset } = useForm();
   const [modal, setModal] = useState(false);
-  const [actualizacion, setActualizacion] = useState(false);  
+  const [loading, setLoading] = useState(false)
+  const [actualizacion, setActualizacion] = useState(false);
   const defaultValueFrom = {
     ticketAmount: "",
     refDate: "",
@@ -43,43 +44,43 @@ const TablaEvent = ({
   const toggleActualizacion = () => {
     setModal(!modal);
   };
-  const actualizarDiaEvento = (id, data) => {    
+  const actualizarDiaEvento = (id, data) => {
     bdBoletas
-        .put(`${URL}/${id}`, data, getAuthHeaders())
-        .then((res) => {
-            reset(defaultValueFrom);
-            toggle.call();
-            setRefresh(!refresh);
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Día Actualizado",
-                showConfirmButton: false,
-                timer: 1500,
-            });
-        })
-        .catch((err) => {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "Contacte con soporte",
-                showConfirmButton: false,
-            });
+      .put(`${URL}/${id}`, data, getAuthHeaders())
+      .then((res) => {
+        reset(defaultValueFrom);
+        toggle.call();
+        setRefresh(!refresh);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Día Actualizado",
+          showConfirmButton: false,
+          timer: 1500,
         });
+      })
+      .catch((err) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Contacte con soporte",
+          showConfirmButton: false,
+        });
+      });
   };
   const actualizarDiaEventoId = (id) => {
     toggleActualizacion.call()
     setActualizacion(true);
     bdBoletas
-        .get(`${URL}/${id}`, getAuthHeaders())
-        .then((res) => {
-            reset(res.data.data);
-        })
-        .catch((err) => null);
+      .get(`${URL}/${id}`, getAuthHeaders())
+      .then((res) => {
+        reset(res.data.data);
+      })
+      .catch((err) => null);
   };
   const crearDiaEvento = (data) => {
-    bdBoletas
-      .post(`${URL}`, data, getAuthHeaders())
+    setLoading(true);
+    bdBoletas.post(`${URL}`, data, getAuthHeaders())
       .then((res) => {
         reset(defaultValueFrom);
         toggle.call();
@@ -92,7 +93,10 @@ const TablaEvent = ({
           timer: 1500,
         });
       })
-      .catch((err) => {});
+      .catch((err) => { })
+      .finally(() => {
+        setLoading(false);
+      })
   };
 
   const submit = (newData) => {
@@ -109,9 +113,11 @@ const TablaEvent = ({
     return (
       <div className="mx-5">
         <h5>Días del evento</h5>
+
         <button className="btn btn-success" onClick={() => toggle(data?.id)}>
           Crear Día
         </button>
+
         {data?.event_days?.length > 0 ? (
           <table className="table">
             <thead>
@@ -133,11 +139,11 @@ const TablaEvent = ({
                   <td>{day.ticketAmount}</td>
                   <td>{day.refDate}</td>
                   <td>{day.group}</td>
-                  <td>{day.multiday ? 'si': 'no'}</td>
+                  <td>{day.multiday ? 'si' : 'no'}</td>
                   <td>{day.price} $</td>
                   <td>{day.artist}</td>
                   <td>
-                    <button className="btn btn-success" onClick={() =>  actualizarDiaEventoId(day?.id)}>Editar</button>
+                    <button className="btn btn-success" onClick={() => actualizarDiaEventoId(day?.id)}>Editar</button>
                   </td>
 
                 </tr>
@@ -211,7 +217,7 @@ const TablaEvent = ({
         return (
           <>
             <img
-              src={`https://boletos.tms2.nuvola7.com.mx/storage/eventosFotos/${row?.eventImage}`}
+              src={`http://boletos.tms2.nuvola7.com.mx/storage/eventosFotos/${row?.eventImage}`}
               alt=""
               style={{
                 width: 150,
@@ -263,6 +269,7 @@ const TablaEvent = ({
         reset={reset}
         days={days}
         actualizacion={actualizacion}
+        loading={loading}
       />
     </Card>
   );

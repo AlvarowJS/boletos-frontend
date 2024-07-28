@@ -6,15 +6,28 @@ const QrScaner = ({
     setCodeQr, codeQr, registrarTicket
 }) => {
     const [result, setResult] = useState('');
-    console.log(typeof registrarTicket)
+    const [facingMode, setFacingMode] = useState('environment');
+    const [isDesktop, setIsDesktop] = useState(false)
     return (
         <div>
             <h1>Escanear Código QR</h1>
+            {/* <div className='d-flex gap-2 mt-3'>
+                <button onClick={() => setIsDesktop(true)} className='btn btn-primary'>
+                    Cámara Delantera
+                </button>
+                <button onClick={() => setIsDesktop(false)} className='btn btn-primary'>
+                    Cámara Trasera
+                </button>
+            </div> */}
             <div style={{ width: '400px' }}>
                 <QrReader
+               
                     constraints={{
                         facingMode: { exact: 'environment' }
                     }}
+                    // constraints={{
+                    //     facingMode: { exact: facingMode }
+                    // }}
                     onResult={(result, error) => {
                         if (!!result) {
                             const decryptedCode = CryptoJS.AES.decrypt(result.text, 'secret-key').toString(CryptoJS.enc.Utf8);
