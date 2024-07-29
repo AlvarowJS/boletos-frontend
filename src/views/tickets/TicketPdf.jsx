@@ -65,7 +65,7 @@ const TicketPdf = ({ data }) => {
                             <View key={index} style={styles.card}>
                                 <Image style={styles.encabezado} src={encabezado} />
                                 <Text style={styles.title}>
-                                    QUE INCLUYE TU ENTRADA A {item?.event_day?.event?.eventName}
+                                    {item?.event_day?.event?.eventName}
                                 </Text>
 
                                 <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>
