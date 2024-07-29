@@ -131,7 +131,10 @@ const Ticket = () => {
             " | " +
             option?.refDate +
             " | " +
-            option?.group,
+            option?.group +
+            " | " +
+            option?.artist
+            ,
     }));
 
     const downloadAllPDFs = () => {
