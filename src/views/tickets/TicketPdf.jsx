@@ -22,7 +22,7 @@ const TicketPdf = ({ data }) => {
                 const qrCodeUrl = await QRCode.toDataURL(encryptedCode);
                 return qrCodeUrl;
             });
-            const qrCodes = await Promise.all(qrCodePromises);            
+            const qrCodes = await Promise.all(qrCodePromises);
             setQrCodes(qrCodes);
         };
 
@@ -68,10 +68,11 @@ const TicketPdf = ({ data }) => {
                                     QUE INCLUYE TU ENTRADA A {item?.event_day?.event?.eventName}
                                 </Text>
 
-                                <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>                     
-                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>                                
+                                <Text style={styles.title}>$ {item?.event_day?.price} PESOS</Text>
+                                <Text style={styles.title}>{formatDate(item?.event_day?.refDate)}</Text>
                                 <Text style={styles.subtitle}>{item?.event_day?.artist}</Text>
                                 {qrCodes[pageIndex] && <Image style={styles.qrCodeBig} src={qrCodes[pageIndex]} />}
+                                <Text style={styles.code}>{item?.code}</Text>
                                 <View style={styles.separacion} />
                                 <View style={styles.qrclient}>
                                     <View>
@@ -81,7 +82,9 @@ const TicketPdf = ({ data }) => {
                                     <View>
                                         {qrCodes[pageIndex] && <Image style={styles.qrCode} src={qrCodes[pageIndex]} />}
                                     </View>
-                                </View>                                
+
+                                </View>
+                                <Text style={styles.code}>{item?.code}</Text>
                             </View>
                         ))}
                     </View>
@@ -94,7 +97,7 @@ const TicketPdf = ({ data }) => {
 const styles = StyleSheet.create({
     body: {
         padding: 10, // Reduce padding to fit within the smaller page size
-        backgroundColor: '#f5f5f5',
+        // backgroundColor: '#f5f5f5',
         flexDirection: 'column',
     },
     encabezado: {
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
         height: 260, // Adjusted height for the smaller page
         // marginBottom: 4,
         backgroundColor: 'white',
-        border: '1px solid black',
+        // border: '1px solid black',
         paddingX: 10,
         borderRadius: 5,
         justifyContent: 'center',
@@ -170,6 +173,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    code: {
+        fontSize: 8,
+    }
 });
 
 export default TicketPdf;

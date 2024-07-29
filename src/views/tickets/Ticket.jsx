@@ -118,11 +118,11 @@ const Ticket = () => {
                 })
         }
     }
-    useEffect(() => {
-        if (codeQr) {
-            registrarTicket();
-        }
-    }, [codeQr]);
+    // useEffect(() => {
+    //     if (codeQr) {
+    //         registrarTicket();
+    //     }
+    // }, [codeQr]);
 
     const options = eventosData?.map((option) => ({
         value: option?.id,
