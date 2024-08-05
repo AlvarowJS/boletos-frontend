@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Col, Input, Label, Row } from "reactstrap";
+import { Card, Col, Input, Label, Row } from "reactstrap";
 import Select from "react-select";
 import bdBoletas from "../../api/bdBoletos";
 import TablaTicket from "./TablaTicket";
 import TicketPdf from "./TicketPdf";
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import QrScaner from "./QrScaner";
+import CryptoJS from 'crypto-js';
 const URL = "/v1/ticket";
 const URLEVENTOSDAY = "/v1/eventday";
 import Swal from "sweetalert2";
@@ -25,7 +26,9 @@ const Ticket = () => {
     const [refresh, setRefresh] = useState(false);
     const [page, setPage] = useState(1)
     const [escanear, setEscanear] = useState(false)
+    const [manual, setManual] = useState(false)
     const [totalPages, setTotalPages] = useState()
+    const [codeManual, setCodeManual] = useState()
     const [codeQr, setCodeQr] = useState()
     const handleFilter = (e) => {
         setSearch(e.target.value);
@@ -78,8 +81,7 @@ const Ticket = () => {
     const actualizarData = () => {
         setRefresh(!refresh)
     }
-    const registrarTicket = () => {
-        console.log("sea ctivo", codeQr)
+    const registrarTicket = () => {        
         if (codeQr) {
             bdBoletas.put(`${URL}/${codeQr}`, null, getAuthHeaders())
                 .then(res => {
@@ -134,7 +136,7 @@ const Ticket = () => {
             option?.group +
             " | " +
             option?.artist
-            ,
+        ,
     }));
 
     const downloadAllPDFs = () => {
@@ -147,6 +149,21 @@ const Ticket = () => {
             link.click();
         }
     };
+
+    const registroManual = () => {
+        setManual(!manual)
+    }
+
+    const handleCodeManual = (e) => {   
+        setCodeManual(e.target.value)
+        
+    }
+
+    const desencriptCode = () => {             
+        const decryptedCode = CryptoJS.AES.decrypt(codeManual, 'secret-key').toString(CryptoJS.enc.Utf8);
+        setCodeQr(decryptedCode);
+              
+    }
     return (
         <div>
             <Row>
@@ -220,10 +237,17 @@ const Ticket = () => {
                     </button>
                 </Col>
                 <Col sm="3">
+                    <button className="btn btn-warning"
+                        onClick={registroManual}
+                    >
+                        Registro Manual
+                    </button>
+                </Col>
+                <Col sm="3">
                     <button className="btn btn-success"
                         onClick={actualizarData}
-                    >                        
-                            Actualizar data                        
+                    >
+                        Actualizar data
                     </button>
                 </Col>
 
@@ -241,6 +265,24 @@ const Ticket = () => {
                 }
 
             </div>
+            {
+                manual ? (
+                    <Card className="d-flex justify-content-center p-4 m-2 ">
+                        <div className="d-flex gap-2 flex-wrap">
+
+                            <Label>Código QR</Label>
+                            <Input type="text" onChange={handleCodeManual}/>
+                            Codigo: {codeQr}
+                            <button type="button" className="btn btn-warning" onClick={desencriptCode}>Decifrar</button>
+                            <button className="btn btn-success" onClick={registrarTicket}>Registrar</button>
+                            {/* <button className="btn btn-info">Registrar Codigo Manual</button> */}
+
+                        </div>
+                    </Card>
+                )
+                    :
+                    null
+            }
 
 
             {/* <PDFViewer style={{ width: '100%', height: '600px' }}>
