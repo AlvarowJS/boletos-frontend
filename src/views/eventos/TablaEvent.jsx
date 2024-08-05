@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import FormEventDay from "./FormEventDay";
 import bdBoletas from "../../api/bdBoletos";
 const URL = "/v1/eventday";
+const URLMOSTRAR = "v1/ocultar-mostrar";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -68,6 +69,7 @@ const TablaEvent = ({
         });
       });
   };
+  
   const actualizarDiaEventoId = (id) => {
     toggleActualizacion.call()
     setActualizacion(true);
@@ -107,7 +109,28 @@ const TablaEvent = ({
       crearDiaEvento(newData);
     }
   };
-
+ 
+  const ocultarEventDay = (id) => {
+    bdBoletas.get(`${URLMOSTRAR}/${id}`, getAuthHeaders())
+      .then((res) => {
+        setRefresh(!refresh)
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Evento actualizado",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Contacte con soporte",
+          showConfirmButton: false,
+        });
+      })
+  }
 
   const ExpandedComponent = ({ data }) => {
     return (
@@ -129,6 +152,7 @@ const TablaEvent = ({
                 <th>Multifecha?</th>
                 <th>Precio</th>
                 <th>Artista</th>
+                <th>Mostrar</th>
                 <th>Acción</th>
               </tr>
             </thead>
@@ -142,8 +166,10 @@ const TablaEvent = ({
                   <td>{day.multiday ? 'si' : 'no'}</td>
                   <td>{day.price} $</td>
                   <td>{day.artist}</td>
-                  <td>
-                    <button className="btn btn-success" onClick={() => actualizarDiaEventoId(day?.id)}>Editar</button>
+                  <td>{day.show ? "si" : "no"}</td>
+                  <td className="">
+                    <button className="btn btn-success mb-1" onClick={() => actualizarDiaEventoId(day?.id)}>Editar</button>
+                    <button className="btn btn-warning" onClick={() => ocultarEventDay(day?.id)}>{day?.show ? "Ocultar" : "Mostrar"}</button>
                   </td>
 
                 </tr>
