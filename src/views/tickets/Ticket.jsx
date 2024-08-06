@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, Col, Input, Label, Row } from "reactstrap";
 import Select from "react-select";
 import bdBoletas from "../../api/bdBoletos";
@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 const Ticket = () => {
+    const inputRef = useRef(null);
     const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
     const [search, setSearch] = useState();
@@ -90,7 +91,7 @@ const Ticket = () => {
         } else {
             ticketCode = decryptedCode;
         }
-        
+
         if (ticketCode) {
             bdBoletas.put(`${URL}/${ticketCode}`, null, getAuthHeaders())
                 .then(res => {
@@ -101,8 +102,14 @@ const Ticket = () => {
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    if (inputRef.current) {                       
+                        inputRef.current.value = '';
+                    }
                 })
                 .catch(err => {
+                    if (inputRef.current) {                       
+                        inputRef.current.value = '';
+                    }
                     if (err.response.status == 404) {
                         Swal.fire({
                             position: "center",
@@ -165,16 +172,17 @@ const Ticket = () => {
 
     const handleCodeManual = (e) => {
         console.log(e.target.value)
-        setCodeManual(e.target.value)
         let codeQrChange = e.target.value;
-        let decryptedCode = CryptoJS.AES.decrypt(codeQrChange, 'secret-key').toString(CryptoJS.enc.Utf8);        
+        let decryptedCode = CryptoJS.AES.decrypt(codeQrChange, 'secret-key').toString(CryptoJS.enc.Utf8);
         setcodeMomentManual(decryptedCode)
+        console.log(inputRef.current)
+
         registrarTicket(decryptedCode);
-        setCodeManual('');
+       
     }
 
     const desencriptCode = () => {
-        const decryptedCode = CryptoJS.AES.decrypt(codeManual, 'secret-key').toString(CryptoJS.enc.Utf8);        
+        const decryptedCode = CryptoJS.AES.decrypt(codeManual, 'secret-key').toString(CryptoJS.enc.Utf8);
         setcodeMomentManual(decryptedCode)
         registrarTicket(decryptedCode);
         setCodeManual('');
@@ -286,7 +294,10 @@ const Ticket = () => {
                         <div className="d-flex gap-2 flex-wrap">
 
                             <Label>Código QR</Label>
-                            <Input type="text" onChange={handleCodeManual} value={codeManual} />
+                            <input className="form-control" type="text" onChange={handleCodeManual}
+                            // value={codeManual} 
+                            ref={inputRef}
+                            />
                             Codigo: {codeMomentManual}
                             {/* <button type="button" className="btn btn-warning" onClick={desencriptCode}>Registrar</button> */}
 
