@@ -31,7 +31,7 @@ const Ticket = () => {
     const [codeManual, setCodeManual] = useState()
     const [codeQr, setCodeQr] = useState()
     const [codeMomentManual, setcodeMomentManual] = useState()
-    
+
     const handleFilter = (e) => {
         setSearch(e.target.value);
     };
@@ -84,7 +84,13 @@ const Ticket = () => {
         setRefresh(!refresh)
     }
     const registrarTicket = (decryptedCode) => {
-        const ticketCode = decryptedCode || codeQr;        
+        let ticketCode = '';
+        if (decryptedCode !== null && typeof decryptedCode === 'object' && !Array.isArray(decryptedCode)) {
+            ticketCode = codeQr;
+        } else {
+            ticketCode = decryptedCode;
+        }
+        
         if (ticketCode) {
             bdBoletas.put(`${URL}/${ticketCode}`, null, getAuthHeaders())
                 .then(res => {
@@ -157,13 +163,18 @@ const Ticket = () => {
         setManual(!manual)
     }
 
-    const handleCodeManual = (e) => {   
-        setCodeManual(e.target.value)        
+    const handleCodeManual = (e) => {
+        console.log(e.target.value)
+        setCodeManual(e.target.value)
+        let codeQrChange = e.target.value;
+        let decryptedCode = CryptoJS.AES.decrypt(codeQrChange, 'secret-key').toString(CryptoJS.enc.Utf8);        
+        setcodeMomentManual(decryptedCode)
+        registrarTicket(decryptedCode);
+        setCodeManual('');
     }
 
-    const desencriptCode = () => {             
-        const decryptedCode = CryptoJS.AES.decrypt(codeManual, 'secret-key').toString(CryptoJS.enc.Utf8);
-        // setCodeQr(decryptedCode);
+    const desencriptCode = () => {
+        const decryptedCode = CryptoJS.AES.decrypt(codeManual, 'secret-key').toString(CryptoJS.enc.Utf8);        
         setcodeMomentManual(decryptedCode)
         registrarTicket(decryptedCode);
         setCodeManual('');
@@ -275,9 +286,9 @@ const Ticket = () => {
                         <div className="d-flex gap-2 flex-wrap">
 
                             <Label>Código QR</Label>
-                            <Input type="text" onChange={handleCodeManual} value={codeManual}/>
+                            <Input type="text" onChange={handleCodeManual} value={codeManual} />
                             Codigo: {codeMomentManual}
-                            <button type="button" className="btn btn-warning" onClick={desencriptCode}>Registrar</button>
+                            {/* <button type="button" className="btn btn-warning" onClick={desencriptCode}>Registrar</button> */}
 
                         </div>
                     </Card>
